@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ESLintProjectComponent">
+    <option name="eslintRcFile" value=".eslintrc.js" />
+    <option name="eslintExecutable" value="D:\汕大课表\任务\函数插件\node_modules\.bin\eslint.cmd" />
+    <option name="nodeInterpreter" value="F:\app\node\node.exe" />
+    <option name="pluginEnabled" value="true" />
+  </component>
+</project>

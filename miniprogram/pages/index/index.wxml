@@ -1,0 +1,7 @@
+<!--<list />-->
+<input placeholder="账号" bindinput="bindInput" data-key="account"/>
+<input placeholder="密码" bindinput="bindInput" data-key="password"/>
+<button bindtap="getConfigure" open-type="getUserInfo">查询认证配置</button>
+<button bindtap="getCode" open-type="getUserInfo">获取授权码</button>
+<button bindtap="getSkey" open-type="getUserInfo">得到skey</button>
+<p>{{skey}}</p>
