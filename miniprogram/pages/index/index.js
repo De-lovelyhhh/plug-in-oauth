@@ -3,8 +3,8 @@
 let plugin = requirePlugin('myPlugin')
 Page({
     data: {
-        account: '',
-        password: '',
+        account: '17jhxu',
+        password: 'Jh1515451232',
         res: {},
         code: '',
         skey: ''

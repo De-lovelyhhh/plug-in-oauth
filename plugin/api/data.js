@@ -3,27 +3,28 @@ let data = 'init data'
 import regeneratorRuntime from 'runtime' // eslint-disable-line
 
 let oauthSession = {}
-let cookieA = {}
+let cookieA
 
 const getCode = async function (account, password, res1) {
-
-    const login = async function () {
-        return new Promise(function (resolve, reject) {
+    const login = async function (account, password) {
+        return await new Promise(function (resolve, reject) {
             wx.request({
                 url: 'http://139.199.224.230:7001/oauth/login',
                 method: 'POST',
                 needLogin: false,
                 data: { account, password },
                 success: function (res) {
-                    console.log(res)
                     let oauthSessionKey
                     let oauthSessionValue
                     try {
-                        [oauthSessionKey, oauthSessionValue] = res.header['set-cookie'].split(';')[0].split('=')
+                        oauthSessionKey = res.cookies[0].name
+                        oauthSessionValue = res.cookies[0].value
+                        // [oauthSessionKey, oauthSessionValue] = res.header['set-cookie'].split(';')[0].split('=')
                         console.log('login success')
                     } catch (e) {
                         console.log(e)
                     }
+
                     // 存储资源服务器session
                     oauthSession = { oauthSessionKey, oauthSessionValue }
                     resolve(oauthSession)
@@ -34,11 +35,10 @@ const getCode = async function (account, password, res1) {
             })
         })
     }
-
     const getOauth = async function () {
         let cookieb = await login(account, password)
         let { oauthSessionKey, oauthSessionValue } = cookieb
-        return new Promise(function (resolve, reject) {
+        return await new Promise(function (resolve, reject) {
             wx.request({
                 url: 'http://139.199.224.230:7001/oauth/authorize',
                 method: 'GET',
@@ -52,7 +52,7 @@ const getCode = async function (account, password, res1) {
                     from: 'mini'
                 },
                 success: function (res) {
-                    console.log(res)
+                    console.log('oauth相关数据：' + res)
                     resolve(res.data.authorization_code)
                 },
                 fail: function (res) {
@@ -61,26 +61,24 @@ const getCode = async function (account, password, res1) {
             })
         })
     }
-
-    return await getOauth()
+    return getOauth()
 }
 
 
 
 const getConfigure = async function () {
     let json
-    return new Promise(function (resolve, reject) {
+    return await new Promise(function (resolve, reject) {
         wx.request({
             url: 'http://139.199.224.230:7002/user/get_oauth_data',
             method: 'GET',
             needLogin: false,
             data: { from: 'mini' },
             success: function (res) {
-                console.log(res)
-                let cookieAKey
-                let cookieAValue;
-                [cookieAKey, cookieAValue] = res.header['set-cookie'].split(';')[0].split('=')
+                let cookieAKey = res.cookies[0].name
+                let cookieAValue = res.cookies[0].value
                 cookieA = { cookieAKey, cookieAValue }
+                console.log('cookieA:' + cookieA)
                 json = {
                     client_id: res.data.client_id,
                     state: res.data.state,
@@ -112,7 +110,7 @@ const getSkey = async function (code, res1) {
                 from: 'mini'
             },
             success: function (res) {
-                console.log(res.data.skey)
+                console.log('skey:' + res.data.skey)
                 resolve(res.data.skey)
             },
             fail: function (res) {

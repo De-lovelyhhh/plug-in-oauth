@@ -17,6 +17,8 @@ module.exports = {
     rules: {
         // 分号
         "semi": ['error', 'never'],
-        "no-return-await":"off"
+        "no-return-await":"off",
+        "no-var":"off",
+        "no-inner-declarations":"off"
     }
 };
